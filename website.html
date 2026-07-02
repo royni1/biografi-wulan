@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sari Wulandari</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #0b1220;
+      color: #f1f5f9;
+      line-height: 1.7;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(11, 18, 32, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(34, 211, 238, 0.1);
+    }
+    nav .logo {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #22d3ee;
+      letter-spacing: 0.05em;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+    nav ul li a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #94a3b8;
+      transition: color 0.3s;
+      position: relative;
+    }
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #22d3ee;
+      transition: width 0.3s;
+    }
+    nav ul li a:hover {
+      color: #22d3ee;
+    }
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: #22d3ee;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Sections */
+    section {
+      padding: 5rem 1.5rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 2.5rem;
+      text-align: center;
+      color: #22d3ee;
+      position: relative;
+    }
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(90deg, #22d3ee, transparent);
+      margin: 0.5rem auto 0;
+      border-radius: 2px;
+    }
+
+    /* Hero */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      left: -20%;
+      width: 140%;
+      height: 140%;
+      background: radial-gradient(ellipse at 30% 50%, rgba(34, 211, 238, 0.08), transparent 60%),
+                  radial-gradient(ellipse at 70% 50%, rgba(34, 211, 238, 0.05), transparent 60%);
+      pointer-events: none;
+    }
+    .hero-avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #22d3ee, #0ea5e9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #0b1220;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 40px rgba(34, 211, 238, 0.25), 0 0 80px rgba(34, 211, 238, 0.1);
+      position: relative;
+      z-index: 1;
+    }
+    #hero h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #f1f5f9, #22d3ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.75rem;
+      position: relative;
+      z-index: 1;
+    }
+    #hero p {
+      font-size: 1.15rem;
+      color: #94a3b8;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-glow {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: rgba(34, 211, 238, 0.06);
+      filter: blur(60px);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+    }
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #22d3ee;
+      font-size: 1.5rem;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* About */
+    #about {
+      border-top: 1px solid rgba(34, 211, 238, 0.06);
+    }
+    #about p {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      color: #cbd5e1;
+      font-size: 1.05rem;
+    }
+
+    /* Skills */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+    }
+    .skill-badge {
+      background: rgba(34, 211, 238, 0.06);
+      border: 1px solid rgba(34, 211, 238, 0.15);
+      border-radius: 12px;
+      padding: 1rem 0.75rem;
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #22d3ee;
+      transition: all 0.3s;
+    }
+    .skill-badge:hover {
+      background: rgba(34, 211, 238, 0.12);
+      border-color: #22d3ee;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(34, 211, 238, 0.12);
+    }
+
+    /* Projects */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .project-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(34, 211, 238, 0.1);
+      border-radius: 16px;
+      padding: 1.75rem;
+      transition: all 0.35s;
+      display: flex;
+      flex-direction: column;
+    }
+    .project-card:hover {
+      border-color: rgba(34, 211, 238, 0.35);
+      transform: translateY(-5px);
+      box-shadow: 0 12px 32px rgba(34, 211, 238, 0.08);
+    }
+    .project-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #22d3ee;
+      margin-bottom: 0.5rem;
+    }
+    .project-card p {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      line-height: 1.65;
+      flex: 1;
+    }
+    .project-card a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1rem;
+      color: #22d3ee;
+      font-weight: 600;
+      font-size: 0.875rem;
+      transition: gap 0.3s;
+    }
+    .project-card a:hover {
+      gap: 0.7rem;
+    }
+
+    /* Contact */
+    #contact {
+      border-top: 1px solid rgba(34, 211, 238, 0.06);
+    }
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .contact-links a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      background: rgba(34, 211, 238, 0.06);
+      border: 1px solid rgba(34, 211, 238, 0.12);
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      transition: all 0.3s;
+    }
+    .contact-links a:hover {
+      background: rgba(34, 211, 238, 0.12);
+      border-color: #22d3ee;
+      color: #22d3ee;
+      transform: translateY(-2px);
+    }
+    .contact-links .icon {
+      font-size: 1.2rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      border-top: 1px solid rgba(34, 211, 238, 0.06);
+      color: #475569;
+      font-size: 0.85rem;
+    }
+    footer span {
+      color: #22d3ee;
+    }
+
+    /* Scroll Animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(35px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      nav {
+        padding: 0.75rem 1.25rem;
+      }
+      nav ul {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(11, 18, 32, 0.95);
+        backdrop-filter: blur(12px);
+        padding: 1rem 2rem;
+        gap: 1rem;
+        border-bottom: 1px solid rgba(34, 211, 238, 0.1);
+      }
+      nav ul.open {
+        display: flex;
+      }
+      .menu-toggle {
+        display: block;
+      }
+      #hero h1 {
+        font-size: 2rem;
+      }
+      #hero p {
+        font-size: 1rem;
+      }
+      .hero-avatar {
+        width: 110px;
+        height: 110px;
+        font-size: 2.3rem;
+      }
+      section {
+        padding: 3.5rem 1.25rem;
+      }
+      .section-title {
+        font-size: 1.4rem;
+      }
+      .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .contact-links {
+        flex-direction: column;
+        align-items: center;
+      }
+      .contact-links a {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="logo">SW</div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menu">&#9776;</button>
+    <ul id="navMenu">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section id="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-avatar">SW</div>
+    <h1>Hai, Saya Sari Wulandari</h1>
+    <p>dari batu menjadi sesuatu</p>
+    <div class="scroll-indicator">&#8595;</div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <h2 class="section-title reveal">Tentang Saya</h2>
+    <p class="reveal">
+      Saya bekerja sebagai administrasi dan pengawas lapangan di PT. PLN Persero, 
+      sekaligus aktif mengelola usaha keluarga UD. Rejeki Mili 354 yang bergerak di bidang material bangunan dan batu alam. 
+      Dengan latar belakang di maintenance kelistrikan, manufaktur, dan trouble shooting, 
+      saya terbiasa menghadapi tantangan teknis maupun non-teknis secara langsung.
+    </p>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills">
+    <h2 class="section-title reveal">Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-badge reveal">Driver Handal</div>
+      <div class="skill-badge reveal">Office Management</div>
+      <div class="skill-badge reveal">Maintenance Kelistrikan</div>
+      <div class="skill-badge reveal">Manufaktur</div>
+      <div class="skill-badge reveal">Trouble Shooting</div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects">
+    <h2 class="section-title reveal">Pengalaman</h2>
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <h3>UD. Rejeki Mili 354</h3>
+        <p>
+          Berdiri sejak 1980, didirikan oleh Bapak Sana dan Ibu. Bergerak di bidang penjualan 
+          material bangunan, batu alam, paving blok jalan, serta bis sumur dan gorong-gorong selokan.
+        </p>
+        <a href="#">Selengkapnya &rarr;</a>
+      </div>
+
+      <div class="project-card reveal">
+        <h3>PT. PLN Persero</h3>
+        <p>
+          Kegiatan saya saat ini sebagai pegawai di PT. PLN, menjalankan peran di bagian administrasi 
+          serta pengawas lapangan untuk memastikan operasional berjalan lancar.
+        </p>
+        <a href="#">Selengkapnya &rarr;</a>
+      </div>
+
+      <div class="project-card reveal">
+        <h3>Proyek Lainnya</h3>
+        <p>
+          Berbagai pengalaman di bidang manufaktur, trouble shooting, dan maintenance kelistrikan 
+          yang memperkuat kemampuan teknis dan problem solving saya.
+        </p>
+        <a href="#">Selengkapnya &rarr;</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <h2 class="section-title reveal">Kontak</h2>
+    <div class="contact-links">
+      <a href="https://instagram.com/wull.sarwull" target="_blank" rel="noopener" class="reveal">
+        <span class="icon">&#9654;</span> Instagram
+      </a>
+      <a href="mailto:wull.sarwull@gmail.com" class="reveal">
+        <span class="icon">&#9993;</span> Email
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    &copy; <span id="year"></span> Sari Wulandari
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.getElementById('menuToggle').addEventListener('click', function() {
+      document.getElementById('navMenu').classList.toggle('open');
+    });
+
+    // Close menu on link click (mobile)
+    document.querySelectorAll('#navMenu a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('navMenu').classList.remove('open');
+      });
+    });
+
+    // Scroll reveal animation
+    const revealElements = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    revealElements.forEach(el => observer.observe(el));
+
+    // Set current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
